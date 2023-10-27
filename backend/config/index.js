@@ -3,12 +3,12 @@ const util = require('util');
 const readFile = util.promisify(fs.readFile);
 const writeFile = util.promisify(fs.writeFile);
 
-const CONFIG_FILE = process.env.CONFIG_FILE;  // replace with your actual config file path
+let CONFIG_FILE = process.env.CONFIG_FILE; // replace with your actual config file path
 
 async function getConfig() {
     // Read the config file and parse it as JSON
+    CONFIG_FILE = process.env.CONFIG_FILE;
     const data = await readFile(CONFIG_FILE);
-    console.log("data",JSON.parse(data))
     return JSON.parse(data);
 }
 
