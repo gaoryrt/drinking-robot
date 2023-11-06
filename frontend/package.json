@@ -15,7 +15,8 @@
     "start": "react-scripts start --host 0.0.0.0",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "serve": "serve -s build"
   },
   "eslintConfig": {
     "extends": [
@@ -35,6 +36,7 @@
       "last 1 safari version"
     ]
   },
+  "proxy":"http://localhost:8000",
   "devDependencies": {
     "tailwindcss": "^3.3.5"
   }

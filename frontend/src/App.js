@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./index"
 
-
 function MyForm() {
   const [formState, setFormState] = useState({
     startTime: "",
     endTime: "",
     frequency: "",
-    message: "",
+    webhookURL:""
   });
   const options = [
     { value: 1, label: "每天1次" },
@@ -24,23 +23,33 @@ function MyForm() {
     });
   };
 
-  useEffect(()=>{
-    fetch(`/config`, {
-    method: 'GET', 
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    }).then(res=>{
-      if (!res.ok)
-        throw new Error('http error'+res.status)
-      return res.json();
-    }).then(data=>setFormState(data)).catch(err=>console.log('fetch failed',err))
-  },[])
+  useEffect(() => {
+    // Get the query parameters from the current URL
+    const queryParams = window.location.search;
+
+    // Construct the URL with the query parameters
+    const apiUrl = `${REACT_SERVER_URL}/config${queryParams}`;
+
+    fetch(apiUrl, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    })
+    .then(res => {
+        if (!res.ok)
+            throw new Error('HTTP error ' + res.status);
+        return res.json();
+    })
+    .then(data => setFormState(data))
+    .catch(err => console.log('Fetch failed', err));
+}, []);
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const response = await fetch(`/config`, {
+    const response = await fetch(`${REACT_SERVER_URL}/config`, {
       method: 'POST', 
       headers: {
         'Content-Type': 'application/json'
@@ -49,7 +58,8 @@ function MyForm() {
     });
 
     if (response.ok) {
-      alert("设置成功辣")
+      alert("设置成功")
+      window.close()
       console.log('Success');
     } else {
       alert("设置失败辣")
@@ -59,54 +69,45 @@ function MyForm() {
 
   return (
     <div className="flex items-center justify-center h-screen bg-blue-100">
-      <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 border-2 border-gray-200 space-y-4" 
-      style={{ maxWidth: '500px' }} // 设置表单的最大宽度
-      onSubmit={handleSubmit}
+      <form
+        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 border-2 border-gray-200 space-y-4"
+        style={{ maxWidth: '500px' }}
+        onSubmit={handleSubmit}
       >
         <div className="mb-4 text-center" style={{ maxWidth: '400px' }}>
-          <p className="text-xs text-gray-500 tracking-widest"> 
-            {infoText}
-          </p>
+          <p className="text-xs text-gray-500 tracking-widest">{infoText}</p>
         </div>
         <div className="flex justify-between">
           <div className="mb-4 w-1/2 pr-3">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              开始时间
-            </label>
+            <label className="block text-gray-700 text-sm font-bold mb-2">开始时间</label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-              type="time" 
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              type="time"
               name="startTime"
               value={formState.startTime}
               onChange={handleInputChange}
             />
           </div>
-
+  
           <div className="mb-4 w-1/2 pl-3">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              结束时间
-            </label>
-            <input 
+            <label className="block text-gray-700 text-sm font-bold mb-2">结束时间</label>
+            <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              type="time" 
+              type="time"
               name="endTime"
               value={formState.endTime}
               onChange={handleInputChange}
-              // onBlur={handleInputChange}
             />
           </div>
         </div>
-
+  
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
-            提醒次数
-          </label>
-          <select 
+          <label className="block text-gray-700 text-sm font-bold mb-2">提醒次数</label>
+          <select
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             name="frequency"
             value={formState.frequency}
             onChange={handleInputChange}
-            onBlur={handleInputChange}
           >
             {options.map((option, index) => (
               <option key={index} value={option.value}>
@@ -115,23 +116,23 @@ function MyForm() {
             ))}
           </select>
         </div>
-
+  
+        {/* Webhook地址字段 */}
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
-            自定义提醒消息
-          </label>
-          <textarea 
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-            rows="3"
-            name="message"
-            value={formState.message}
+          <label className="block text-gray-700 text-sm font-bold mb-2">Webhook地址</label>
+          <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            type="text"
+            name="webhookURL"
+            value={formState.webhookURL}
             onChange={handleInputChange}
-          ></textarea>
+            disabled={!!window.location.search}
+          />
         </div>
-
+  
         <div className="flex items-center justify-between">
-          <button 
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="submit"
           >
             Submit
@@ -140,6 +141,7 @@ function MyForm() {
       </form>
     </div>
   );
+  
 }
 
 
