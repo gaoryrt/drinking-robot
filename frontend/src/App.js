@@ -28,7 +28,7 @@ function MyForm() {
     const queryParams = window.location.search;
 
     // Construct the URL with the query parameters
-    const apiUrl = `${REACT_SERVER_URL}/config${queryParams}`;
+    const apiUrl = `${process.env.REACT_SERVER_URL}/config${queryParams}`;
 
     fetch(apiUrl, {
         method: 'GET',
@@ -49,7 +49,7 @@ function MyForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const response = await fetch(`${REACT_SERVER_URL}/config`, {
+    const response = await fetch(`${process.env.REACT_SERVER_URL}/config`, {
       method: 'POST', 
       headers: {
         'Content-Type': 'application/json'
