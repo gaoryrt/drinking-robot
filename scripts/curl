@@ -1,0 +1,10 @@
+curl 'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=ef8f2ad9-606d-449e-b1fe-6e900591859b' \
+   -H 'Content-Type: application/json' \
+   -d '
+   {
+        "msgtype": "text",
+        "text": {
+            "content": "hello 日天，喝水机器人2号为你服务🥵🥵",
+            "mentioned_list":["gaoritian"]
+        }
+   }'

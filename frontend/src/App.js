@@ -22,14 +22,13 @@ function MyForm() {
       [event.target.name]: event.target.value,
     });
   };
-  console.log(process.env)
   useEffect(() => {
     // Get the query parameters from the current URL
     const queryParams = window.location.search;
 
     // Construct the URL with the query parameters
     const apiUrl = `${process.env.REACT_APP_SERVER_URL}/config${queryParams}`;
-
+    console.log("api:",apiUrl)
     fetch(apiUrl, {
         method: 'GET',
         headers: {
