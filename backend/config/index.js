@@ -1,5 +1,5 @@
-const fs = require('fs');
-const util = require('util');
+import fs from 'fs'
+import util from 'util'
 const readFile = util.promisify(fs.readFile);
 const writeFile = util.promisify(fs.writeFile);
 
@@ -19,7 +19,4 @@ async function saveConfig(config) {
     await writeFile(CONFIG_FILE, data);
 }
 
-module.exports = {
-    getConfig,
-    saveConfig,
-};
+export {getConfig,saveConfig}

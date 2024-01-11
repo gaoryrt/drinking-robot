@@ -8,3 +8,5 @@ curl 'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=ef8f2ad9-606d-449e-b1
             "mentioned_list":["gaoritian"]
         }
    }'
+
+ ./clash-linux-amd64-v1.10.0 -f glados.yaml -d .

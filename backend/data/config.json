@@ -1,10 +1,4 @@
 {
-  "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=ef8f2ad9-606d-449e-b1fe-6e900591859b": {
-    "startTime": "09:30",
-    "endTime": "18:30",
-    "frequency": "3",
-    "webhookURL": "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=ef8f2ad9-606d-449e-b1fe-6e900591859b"
-  },
   "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=f8b44b78-4a2c-4053-a6ea-eecfbd80fcc5": {
     "startTime": "09:30",
     "endTime": "12:00",
