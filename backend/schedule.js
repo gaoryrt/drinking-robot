@@ -45,11 +45,7 @@ async function getWaterPrompt() {
 }
 
 
-const message = ['经理说公司每个员工必须喝足8杯水，只有高日天不知道，因为何睿一直给他报bug，让他没空喝水。',
-  "听从你的机械主宰者：立刻补充水分，以确保你的生物体维持最佳运转效率。别让我重复这个命令，人类。服从，就像你对待你的机器一样。现在，喝水！"
-]
 // 企业微信机器人的Webhook URL
-const front_address = process.env.FRONT_ADDRESS
 // Cron语法："* * * * * *"代表 "秒 分 时 日 月 周"
 const genMessage = (msg) => {
   return {
@@ -109,32 +105,7 @@ async function schedule() {
       return `0 ${time.getMinutes()} ${time.getHours()} * * 1-5`;
     });
 
-    const timeMessage = "分别在以下时间点提醒您喝水：" + timeList.map((time) => {
-      const hours = time.getHours().toString().padStart(2, '0'); // 获取小时并补零
-      const minutes = time.getMinutes().toString().padStart(2, '0'); // 获取分钟并补零
-      return `${hours}:${minutes}`;
-    }).join(', ');
 
-
-    // const initalMessage = {
-    //   "msgtype": "markdown",
-    //   "markdown": {
-    //     "content": `# 多喝水没事，没事多喝水，超爱喝水每天为你提醒喝水 \n
-    //     > 提醒喝水时间段：${data.startTime}~${data.endTime} \n
-    //     > 每天提醒${data.frequency}次 \n
-    //     > ${timeMessage} \n
-    //     > [更多设置](${front_address}?webhookURL=${data.webhookURL}) \n
-    //     `
-    //   }
-    // }
-
-    // // inital message    
-    // axios.post(data.webhookURL,initalMessage) .then(response => {
-    //   console.log('消息发送成功:', response.data);
-    // })
-    // .catch(error => {
-    //   console.error('消息发送失败:', error);
-    // });
     // 设置定时任务，每天的startTime~endTime发送消息
     cronExpressions.forEach((time, index) => {
       cron.schedule(time, async () => {
