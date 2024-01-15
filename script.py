@@ -43,7 +43,7 @@ def get_generated_message():
         return '稍等一下，机器人正在喝水补充能量'
 
 latest_ts = int(open('latest_ts.txt').read().strip())
-def get_frank():
+def get_frank_message():
     global latest_ts
     try:
         response = requests.get("https://frankenstein.gaoryrt.com/api/get?channel=frankenstein")
@@ -78,11 +78,11 @@ def send_message_to_webhook(webhook_url, message):
             "content": message,
         }
     }
-    response = requests.post(webhook_url, headers=headers, data=json.dumps(payload))
-    if response.status_code == 200:
+    try:
+        response = requests.post(webhook_url, headers=headers, data=json.dumps(payload))
         print("Message sent successfully")
-    else:
-        print(f"Failed to send message: {response.status_code}")
+    except Exception as e:
+        print(f'{type(e).__name__}: {e}')
 
 # Main function
 def main():
