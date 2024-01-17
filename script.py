@@ -5,7 +5,7 @@ import google.generativeai as genai
 from datetime import datetime, timedelta, timezone
 
 # Function to check if the current time is within a specific time window
-def is_time_in_window(target_time_str, window_minutes=10):
+def is_time_in_window(target_time_str, window_minutes=30):
     # Define China Standard Time offset
     cst_offset = timezone(timedelta(hours=8))
     # Parse the target time string into a time object

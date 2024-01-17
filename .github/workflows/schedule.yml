@@ -2,11 +2,11 @@ name: Scheduled Python Script
 
 on:
   schedule:
-    - cron: '45 2 * * 1-5'
-    - cron: '22 6 * * 1-5'
-    - cron: '45 7 * * 1-5'
-    - cron: '7 9 * * 1-5'
-    - cron: '0 10 * * 1-5'
+    - cron: '35 2 * * 1-5'
+    - cron: '12 6 * * 1-5'
+    - cron: '35 7 * * 1-5'
+    - cron: '0 9 * * 1-5'
+    - cron: '50 9 * * 1-5'
 
 jobs:
   run-python-script:
