@@ -98,7 +98,7 @@ def main():
         send_message_to_webhook(afternoon_webhook_url, message)
     elif is_time_in_window("18:00"):
         message = get_frank_message()
-        send_message_to_webhook(afternoon_webhook_url,message)
+        send_message_to_webhook(afternoon_webhook_url,gen_message(message))
 
 if __name__ == "__main__":
     main()
