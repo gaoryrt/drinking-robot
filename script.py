@@ -43,6 +43,7 @@ def get_generated_message():
         return '稍等一下，机器人正在喝水补充能量'
 
 latest_ts = int(open('latest_ts.txt').read().strip())
+print(latest_ts)
 def get_frank_message():
     global latest_ts
     try:
@@ -90,15 +91,16 @@ def main():
     afternoon_webhook_url = os.getenv("AFTERNOON_WEBHOOK_URL")
     print(beforenoon_webhook_url,afternoon_webhook_url,os.getenv("GEMINI_API_KEY"))
     print("script is runnnig!")
-    if is_time_in_window("10:45"):
-        message = get_generated_message()
-        send_message_to_webhook(beforenoon_webhook_url, message)
-    elif is_time_in_window("14:22") or is_time_in_window("15:45") or is_time_in_window("17:07"):
-        message = get_generated_message()
-        send_message_to_webhook(afternoon_webhook_url, message)
-    elif is_time_in_window("18:00"):
-        message = get_frank_message()
-        send_message_to_webhook(afternoon_webhook_url,gen_message(message))
+    # if is_time_in_window("10:45"):
+    #     message = get_generated_message()
+    #     send_message_to_webhook(beforenoon_webhook_url, message)
+    # elif is_time_in_window("14:22") or is_time_in_window("15:45") or is_time_in_window("17:07"):
+    #     message = get_generated_message()
+    #     send_message_to_webhook(afternoon_webhook_url, message)
+    # elif is_time_in_window("18:00"):
+    message = get_frank_message()
+    print(gen_message(message))
+    # send_message_to_webhook(afternoon_webhook_url,gen_message(message))
 
 if __name__ == "__main__":
     main()
