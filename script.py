@@ -36,7 +36,7 @@ def get_generated_message():
         "7. Quote popular meme lines\n"
         "8. Like you’re tweeting"
     )
-    if random.random() > 0.5:
+    if random.random() > 0.6:
         prompt = (
             "用以下方法说服我立即喝水：\n"
             "- 网络俚语。\n"
@@ -46,6 +46,18 @@ def get_generated_message():
             "- 插入表情符号\n"
             "- 引用流行语\n"
             "- 像在发微博一样"
+        )
+    if random.random() > 0.7:
+        prompt = (
+            "生成一句有趣并且能够引人发笑的话，目的是以一种幽默和轻松的方式鼓励人们多喝水。请在文本中巧妙地融入网络流行语和梗，使内容既现代又引人入胜。"
+            "1. 主题要凸出劝人喝水\n"
+            "2. 使用网络上流行的比喻或夸张的表达\n"
+            "3. 插入一些你自己觉得合适的emoji，并且要放在合适的位置\n"
+            "4. 插入一些幽默的夸张比喻\n"
+            "5. 创造性地利用流行的网络段子\n"
+            "6. 结合一些经典网络迷因\n"
+            "7. 不要输出引号\n\n"
+            "请注意保持整体文本风趣幽默，同时确保信息传达清晰，鼓励人们多喝水的意图不被幽默元素所掩盖。"
         )
     try:
         response = model.generate_content(prompt)
