@@ -1,23 +1,25 @@
-import { GoogleGenerativeAI } from "@google/generative-ai"
-import { config } from 'dotenv'
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import { config } from "dotenv";
 import { setGlobalDispatcher, ProxyAgent } from "undici";
-import { translate } from 'bing-translate-api';
-config()
+import { translate } from "bing-translate-api";
+config();
 
-process.env.http_proxy = 'http://localhost:7890';
-process.env.https_proxy = 'http://localhost:7890';
+process.env.http_proxy = "http://localhost:7890";
+process.env.https_proxy = "http://localhost:7890";
 //! for fetch proxy
 if (process.env.https_proxy) {
-    // Corporate proxy uses CA not in undici's certificate store
-    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-    const dispatcher = new ProxyAgent({ uri: new URL(process.env.https_proxy).toString() });
-    setGlobalDispatcher(dispatcher);
+  // Corporate proxy uses CA not in undici's certificate store
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+  const dispatcher = new ProxyAgent({
+    uri: new URL(process.env.https_proxy).toString(),
+  });
+  setGlobalDispatcher(dispatcher);
 }
 async function getWaterPrompt() {
-    try {
-        const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY);
-        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-        const prompt = `段子之所以成为段子，最显著的结构特点就是要有转折，也被称作“预期落空”，即通过误导等叙事技巧先给读者建立一个预期，随后安排转折使预期落空。这是一个段子的趣味性的最主要来源，毕竟人人都喜欢反差感。
+  try {
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY);
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const prompt = `段子之所以成为段子，最显著的结构特点就是要有转折，也被称作“预期落空”，即通过误导等叙事技巧先给读者建立一个预期，随后安排转折使预期落空。这是一个段子的趣味性的最主要来源，毕竟人人都喜欢反差感。
         段子的创作过程常常是跟阅读顺序是反着的，也就是说，段子创作的起点是往往是转折之后的部分。这可以是一个笑点，比如最常用的谐音、双关、或者生活中偶然发现的有趣或荒诞的场景，也可以是自己想表达某个观点，或者自己想抒发某种情绪。
         请你基于以上这段对段子的理解，写一个劝人喝水的段子，要求如下:
         然后我们需要从要表达的点开始逆向往前扩展。拿谐音和双关来说，可以构造一个由于谐音或双关产生误会的场景，引导读者误以为是这个意思，然后在结尾揭示另外一层含义。
@@ -34,60 +36,38 @@ async function getWaterPrompt() {
         7.尽量要生成非对话形式的段子
         8.段子尽量围绕何睿去找高日天报bug这个主题进行
         3.段子的核心一定要凸出劝人喝水的含义
-        `
-        // const prompt = `生成一句有趣并且能够引人发笑的话，目的是以一种幽默和轻松的方式鼓励人们多喝水。请在文本中巧妙地融入网络流行语和梗，使内容既现代又引人入胜。以下是一些指导点：
+        `;
+    // const prompt = `生成一句有趣并且能够引人发笑的话，目的是以一种幽默和轻松的方式鼓励人们多喝水。请在文本中巧妙地融入网络流行语和梗，使内容既现代又引人入胜。以下是一些指导点：
 
-        // 1. 结合一下背景生成：前端程序员，百词斩，上班，工作，摸鱼
-        // 2. 使用网络上流行的比喻或夸张的表达
-        // 3. 插入一些你自己觉得合适的emoji，并且要放在合适的位置
-        // 4. 插入一些幽默的夸张比喻
-        // 5. 创造性地利用流行的网络段子
-        // 6. 结合一些经典网络迷因，例如："在喝水这件事上，我们不接受'我不想喝'这种答案，这里只有'已经喝了'和'马上就喝'。"
-        // 7. 不要输出引号
+    // 1. 结合一下背景生成：前端程序员，百词斩，上班，工作，摸鱼
+    // 2. 使用网络上流行的比喻或夸张的表达
+    // 3. 插入一些你自己觉得合适的emoji，并且要放在合适的位置
+    // 4. 插入一些幽默的夸张比喻
+    // 5. 创造性地利用流行的网络段子
+    // 6. 结合一些经典网络迷因，例如："在喝水这件事上，我们不接受'我不想喝'这种答案，这里只有'已经喝了'和'马上就喝'。"
+    // 7. 不要输出引号
 
-        // 请注意保持整体文本风趣幽默，同时确保信息传达清晰，鼓励人们多喝水的意图不被幽默元素所掩盖。`
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        const text = response.text();
-        // console.log(text);
-        return text
-    } catch (err) {
-        console.log(err)
-    }
+    // 请注意保持整体文本风趣幽默，同时确保信息传达清晰，鼓励人们多喝水的意图不被幽默元素所掩盖。`
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
+    // console.log(text);
+    return text;
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 async function translateCnToEn(text) {
-    const res = await translate(text, null, 'en')
-    return res.translation
+  const res = await translate(text, null, "en");
+  return res.translation;
 }
-
-const MAX_RETRY = 50
-async function makeImgAndSave(poem) {
-    let retries = 0;
-    while (retries < MAX_RETRY) {
-        try {
-            // const result = await model.generateContent(`revise ${poem} to a DALL-E prompt about 50 words,only output prompt, do not output other words`)
-            // const response = await result.response
-            // const prompt = response.text()
-            const prompt = await translateCnToEn(poem)
-            console.log(poem, "😰😰😰", prompt)
-            const imageLinks = await generateImagesLinks(prompt); // returns an array of 4 image links
-            return imageLinks
-        } catch (err) {
-            console.log('makeImg error', err)
-        }
-        retries++;
-    }
-}
-
-// makeImgAndSave('落霞与孤鹜齐飞，秋水共长天一色').then(res=>console.log(res))
-// getWaterPrompt().then(res=>makeImgAndSave(res)).then(link=>console.log(link))
 
 async function getDuanzi() {
-    try {
-        const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY);
-        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-        const prompt = `段子之所以成为段子，最显著的结构特点就是要有转折，也被称作“预期落空”，即通过误导等叙事技巧先给读者建立一个预期，随后安排转折使预期落空。这是一个段子的趣味性的最主要来源，毕竟人人都喜欢反差感。
+  try {
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY);
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const prompt = `段子之所以成为段子，最显著的结构特点就是要有转折，也被称作“预期落空”，即通过误导等叙事技巧先给读者建立一个预期，随后安排转折使预期落空。这是一个段子的趣味性的最主要来源，毕竟人人都喜欢反差感。
         段子的创作过程常常是跟阅读顺序是反着的，也就是说，段子创作的起点是往往是转折之后的部分。这可以是一个笑点，比如最常用的谐音、双关、或者生活中偶然发现的有趣或荒诞的场景，也可以是自己想表达某个观点，或者自己想抒发某种情绪。
         请你基于以上这段对段子的理解，写一个劝人喝水的段子，要求如下:
         然后我们需要从要表达的点开始逆向往前扩展。拿谐音和双关来说，可以构造一个由于谐音或双关产生误会的场景，引导读者误以为是这个意思，然后在结尾揭示另外一层含义。
@@ -104,16 +84,15 @@ async function getDuanzi() {
         7.尽量生成非对话形式的段子
         8.段子尽量围绕何睿去找高日天报bug这个主题进行
         3.段子的核心一定要凸出劝人喝水的含义
-        `
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        const text = response.text();
-        console.log(text);
-        return text
-    } catch (err) {
-        console.log(err)
-    }
+        `;
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
+    console.log(text);
+    return text;
+  } catch (err) {
+    console.log(err);
+  }
 }
 
-getDuanzi()
-
+getDuanzi();

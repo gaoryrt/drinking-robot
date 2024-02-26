@@ -1,42 +1,42 @@
-# name: Scheduled Python Script
+name: Scheduled Python Script
 
-# # on:
-#   # schedule:
-#     # - cron: '35 2 * * 1-5'
-#     # - cron: '12 6 * * 1-5'
-#     # - cron: '35 7 * * 1-5'
-#     # - cron: '0 9 * * 1-5'
-#     # - cron: '50 9 * * 1-5'
+on:
+  schedule:
+    - cron: '35 2 * * 1-5'
+    - cron: '12 6 * * 1-5'
+    - cron: '35 7 * * 1-5'
+    - cron: '0 9 * * 1-5'
+    - cron: '50 9 * * 1-5'
 
-# jobs:
-#   run-python-script:
-#     runs-on: ubuntu-latest
+jobs:
+  run-python-script:
+    runs-on: ubuntu-latest
 
-#     steps:
-#       - name: Checkout repository
-#         uses: actions/checkout@v3
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-#       - name: Set up Python
-#         uses: actions/setup-python@v3
-#         with:
-#           python-version: '3.9' # Use the Python version your script is compatible with.
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.9' # Use the Python version your script is compatible with.
 
-#       - name: Install dependencies
-#         run: |
-#           python -m pip install --upgrade pip
-#           pip install -q -U google-generativeai
-#           pip install requests
-#           # Install any dependencies here, if you have a requirements.txt file, uncomment the next line.
-#           # pip install -r requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -q -U google-generativeai
+          pip install requests
+          # Install any dependencies here, if you have a requirements.txt file, uncomment the next line.
+          # pip install -r requirements.txt
 
-#       - name: Run the Python script
-#         run: python3 script.py
-#         # Set environment variables if needed.
-#         env:
-#           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-#           BEFORE_WEBHOOK_URL: ${{ secrets.BEFORE_WEBHOOK_URL }}
-#           AFTERNOON_WEBHOOK_URL: ${{ secrets.AFTERNOON_WEBHOOK_URL }}
-#       - name: Commit & Push changes
-#         uses: actions-js/push@master
-#         with:
-#           github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run the Python script
+        run: python3 script.py
+        # Set environment variables if needed.
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          BEFORE_WEBHOOK_URL: ${{ secrets.BEFORE_WEBHOOK_URL }}
+          AFTERNOON_WEBHOOK_URL: ${{ secrets.AFTERNOON_WEBHOOK_URL }}
+      - name: Commit & Push changes
+        uses: actions-js/push@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
