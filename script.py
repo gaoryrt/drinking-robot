@@ -42,34 +42,6 @@ def get_generated_message():
         print(f'{type(e).__name__}: {e}')
         return '稍等一下，机器人正在喝水补充能量'
 
-latest_ts = int(open('latest_ts.txt').read().strip())
-print(latest_ts)
-def get_frank_message():
-    global latest_ts
-    try:
-        response = requests.get("https://frankenstein.gaoryrt.com/api/get?channel=frankenstein")
-        response.raise_for_status()  # Raises an HTTPError if the HTTP request returned an unsuccessful status code
-        data = response.json()
-        return [item for item in data['result'] if item['ts'] > latest_ts]
-    except requests.RequestException as err:
-        print(err)
-        return []
-
-def gen_message(data_list):
-    global latest_ts
-    content = ""
-    for idx, cur in enumerate(data_list):
-        res = f">{cur['cont']} {cur['nn']}: <font color=\"warning\">[{cur['link']}]({cur['link']})</font>"
-        latest_ts = max(latest_ts, cur['ts'])
-        content += res if idx == len(data_list) - 1 else res + '\n'
-    with open('latest_ts.txt', 'w') as f:
-        f.write(str(latest_ts))
-    return {
-        "msgtype": "markdown",
-        "markdown": {
-            "content": f"#### <font color=\"info\">**白嫖缝合怪**</font>\n{content}",
-        }
-    }
 # Function to send a message to a webhook
 def send_message_to_webhook(webhook_url, message):
     headers = {'Content-Type': 'application/json'}
@@ -95,9 +67,14 @@ def main():
     afternoon_webhook_url = os.getenv("AFTERNOON_WEBHOOK_URL")
     print(beforenoon_webhook_url,afternoon_webhook_url,os.getenv("GEMINI_API_KEY"))
     print("script is runnnig!")
-    message = get_generated_message()
-    print(message)
-    send_message_to_webhook(beforenoon_webhook_url, message)
+    if is_time_in_window("10:45"):
+        message = get_generated_message()
+        print(message)
+        send_message_to_webhook(beforenoon_webhook_url, message)
+    else:
+        message = get_generated_message()
+        print(message)
+        send_message_to_webhook(afternoon_webhook_url, message)
 
 if __name__ == "__main__":
     main()
