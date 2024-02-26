@@ -2,11 +2,12 @@ name: Scheduled Python Script
 
 on:
   schedule:
-    - cron: '35 2 * * 1-5'
-    - cron: '12 6 * * 1-5'
-    - cron: '35 7 * * 1-5'
-    - cron: '0 9 * * 1-5'
-    - cron: '50 9 * * 1-5'
+    - cron: "20 8 * * 1-5"
+    - cron: "35 2 * * 1-5"
+    - cron: "12 6 * * 1-5"
+    - cron: "35 7 * * 1-5"
+    - cron: "0 9 * * 1-5"
+    - cron: "50 9 * * 1-5"
 
 jobs:
   run-python-script:
@@ -19,7 +20,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
-          python-version: '3.9' # Use the Python version your script is compatible with.
+          python-version: "3.9" # Use the Python version your script is compatible with.
 
       - name: Install dependencies
         run: |
