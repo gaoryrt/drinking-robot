@@ -1,6 +1,7 @@
 import requests
 import os
 import json
+import random
 import google.generativeai as genai
 from datetime import datetime, timedelta, timezone
 
@@ -35,6 +36,17 @@ def get_generated_message():
         "7. Quote popular meme lines\n"
         "8. Like you’re tweeting"
     )
+    if random.random() > 0.5:
+        prompt = (
+            "用以下方法说服我立即喝水：\n"
+            "- 网络俚语。\n"
+            "- Z 世代行话。\n"
+            "- 使用缩略语和首字母缩写词。\n"
+            "- 不要输出引号，不要以列表形式输出\n"
+            "- 插入表情符号\n"
+            "- 引用流行语\n"
+            "- 像在发微博一样"
+        )
     try:
         response = model.generate_content(prompt)
         return response.text
