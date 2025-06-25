@@ -32,7 +32,6 @@ jobs:
         run: python3 script.py
         # Set environment variables if needed.
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           BEFORE_WEBHOOK_URL: ${{ secrets.BEFORE_WEBHOOK_URL }}
           AFTERNOON_WEBHOOK_URL: ${{ secrets.AFTERNOON_WEBHOOK_URL }}
       - name: Commit & Push changes
